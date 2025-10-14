@@ -26,10 +26,25 @@ def _download_file_safely(url: str, filepath: Path, manual_url: str) -> None:
     try:
         # Download to temporary location
         subprocess.run(
-            f"wget -O '{temp_path}' '{url}'",
+            f"curl -L -o '{temp_path}' '{url}'",
             shell=True,
             capture_output=True,
         )
+        
+        # Check if we got Google Drive virus scan warning and retry with direct download
+        if os.path.getsize(temp_path) < 1000:  # Small file likely means HTML warning
+            with open(temp_path, 'r', encoding='utf-8', errors='ignore') as f:
+                content = f.read()
+            if 'virus scan warning' in content.lower() and 'drive.usercontent.google.com' in content:
+                # Use direct download URL format for large Google Drive files
+                if 'id=' in url:
+                    file_id = url.split('id=')[1].split('&')[0]
+                    direct_url = f"https://drive.usercontent.google.com/download?id={file_id}&export=download&confirm=t"
+                    subprocess.run(
+                        f"curl -L -o '{temp_path}' '{direct_url}'",
+                        shell=True,
+                        capture_output=True,
+                    )
 
         # Check if download was successful
         temp_file_stat = os.stat(temp_path)

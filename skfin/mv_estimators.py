@@ -67,7 +67,7 @@ class MeanVariance(BaseEstimator):
         Post-initialization process to set additional attributes or setup.
         """
         self.holdings_kwargs = {'risk_target': self.risk_target}
-    
+
     @staticmethod
     def compute_batch_holdings(pred, V, A, risk_target, **kwargs):
         """
@@ -84,7 +84,7 @@ class MeanVariance(BaseEstimator):
             np.ndarray: Portfolio holdings.
         """
         return compute_batch_holdings(pred=pred, V=V, A=A, **kwargs)
-    
+
     def fit(self, X, y=None):
         """
         Fit the model by calculating the covariance matrix 'V_' from targets 'y'.
@@ -110,7 +110,7 @@ class MeanVariance(BaseEstimator):
         kwargs = {**kwargs, **self.holdings_kwargs}
         h = self.compute_batch_holdings(pred=X, V=self.V_, A=A, **kwargs)
         return h
-        
+
     def score(self, X, y):
         """
         Calculate the performance score of the portfolio using Sharpe ratio.

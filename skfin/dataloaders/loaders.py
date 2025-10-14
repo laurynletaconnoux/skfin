@@ -1,4 +1,5 @@
 import logging
+import subprocess
 import sys
 from pathlib import Path
 from typing import Dict
@@ -179,7 +180,7 @@ class DatasetLoader:
         )
 
     def load_loughran_mcdonald_dictionary(
-        self, filename: str = None, force_reload: bool = False
+            self, filename: str = None, force_reload: bool = False
     ) -> pd.DataFrame:
         """
         Load the Loughran-McDonald dictionary.
@@ -197,13 +198,13 @@ class DatasetLoader:
 
         def loader_func():
             id = "17CmUZM9hGUdGYjCXcjQLyybjTrcjrhik"
-            url = f"https://docs.google.com/uc?export=download&confirm=t&id={id}"
+            url = f"https://drive.usercontent.google.com/download?id={id}&export=download&confirm=t"
             filepath = self.cache_manager.cache_dir / filename
 
             _download_file_safely(
                 url=url,
                 filepath=filepath,
-                manual_url="https://sraf.nd.edu/loughran-mcdonald-master-dictionary/",
+                manual_url="https://sraf.nd.edu/loughran-mcdonald-master-dictionary/"
             )
 
             return pd.read_csv(filepath)
@@ -212,9 +213,8 @@ class DatasetLoader:
             filename=filename, loader_func=loader_func, force_reload=force_reload
         )
 
-    def load_10X_summaries(
-        self, filename: str = None, force_reload: bool = False
-    ) -> pd.DataFrame:
+
+    def load_10X_summaries(self, filename: str = None, force_reload: bool = False) -> pd.DataFrame:
         """
         Load 10-X summaries.
 
@@ -231,13 +231,13 @@ class DatasetLoader:
 
         def loader_func():
             id = "1CUzLRwQSZ4aUTfPB9EkRtZ48gPwbCOHA"
-            url = f"https://docs.google.com/uc?export=download&confirm=t&id={id}"
+            url = f"https://drive.usercontent.google.com/download?id={id}&export=download&confirm=t"
             filepath = self.cache_manager.cache_dir / filename
 
             _download_file_safely(
                 url=url,
                 filepath=filepath,
-                manual_url="https://sraf.nd.edu/sec-edgar-data/lm_10x_summaries/",
+                manual_url="https://sraf.nd.edu/sec-edgar-data/lm_10x_summaries/"
             )
 
             return pd.read_csv(filepath)
@@ -252,10 +252,7 @@ class DatasetLoader:
         ).set_index("date")
 
     def load_ag_features(
-        self,
-        filename: str = None,
-        sheet_name: str = "Monthly",
-        force_reload: bool = False,
+            self, filename: str = None, sheet_name: str = "Monthly", force_reload: bool = False
     ) -> pd.DataFrame:
         """
         Load Amit Goyal's characteristics data.
@@ -280,7 +277,7 @@ class DatasetLoader:
             _download_file_safely(
                 url=url,
                 filepath=filepath,
-                manual_url="https://sites.google.com/view/agoyal145/data-library",
+                manual_url="https://sites.google.com/view/agoyal145/data-library"
             )
 
             return pd.read_excel(filepath, sheet_name=sheet_name)

@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import numpy as np
 import pandas as pd
@@ -28,7 +28,7 @@ def fit_predict(estimator, X, y, train, test, return_estimator=True):
 
 @dataclass
 class Backtester:
-    estimator: BaseEstimator = MeanVariance()
+    estimator: BaseEstimator = field(default_factory=MeanVariance)
     max_train_size: int = 36
     test_size: int = 1
     pred_lag: int = 1
